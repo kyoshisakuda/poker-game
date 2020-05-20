@@ -1,21 +1,24 @@
 package org.example;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 public class RankEvaluator {
 
-    public RankType evaluate(List<String> hand) {
+    public RankResult evaluate(List<String> hand) {
         Set<String> memory = new HashSet();
         Map<String, Integer> duplicated = new HashMap<>();
         String prevSuit = null;
         boolean isFlush = true;
         int min = 0;
         int max = 0;
+        PriorityQueue<HandCard> priorityCards = new PriorityQueue<>(5, Collections.reverseOrder());
 
         for (String card : hand) {
             String cardValue = card.substring(0, 1);
@@ -44,36 +47,44 @@ public class RankEvaluator {
             }
         }
 
+        for (String cardValue : memory) {
+            if (duplicated.get(cardValue) == null) {
+                priorityCards.add(new HandCard(getCardValue(cardValue), 1));
+            } else {
+                priorityCards.add(new HandCard(getCardValue(cardValue), duplicated.get(cardValue)));
+            }
+        }
+
         if (max - min == 4 && duplicated.size() == 0) {
             if (isFlush) {
                 if (min == 10) {
-                    return RankType.ROYAL_FLUSH;
+                    return new RankResult(RankType.ROYAL_FLUSH, priorityCards) ;
                 }
-                return RankType.STRAIGHT_FLUSH;
+                return new RankResult(RankType.STRAIGHT_FLUSH, priorityCards) ;
             }
-            return RankType.STRAIGHT;
+            return new RankResult(RankType.STRAIGHT, priorityCards) ;
         }
 
         if (isFlush) {
-            return RankType.FLUSH;
+            return new RankResult(RankType.FLUSH, priorityCards) ;
         }
 
         if (duplicated.size() == 1) {
             if (duplicated.values().stream().findFirst().get() == 2) {
-                return RankType.ONE_PAIR;
+                return new RankResult(RankType.ONE_PAIR, priorityCards) ;
             } else if (duplicated.values().stream().findFirst().get() == 3) {
-                return RankType.THREE_OF_A_KIND;
+                return new RankResult(RankType.THREE_OF_A_KIND, priorityCards) ;
             } else if (duplicated.values().stream().findFirst().get() == 4) {
-                return RankType.FOUR_OF_A_KIND;
+                return new RankResult(RankType.FOUR_OF_A_KIND, priorityCards) ;
             }
         } else if (duplicated.size() == 2) {
             if (duplicated.values().stream().mapToInt(x -> x).sum() == 5) {
-                return RankType.FULL_HOUSE;
+                return new RankResult(RankType.FULL_HOUSE, priorityCards) ;
             }
-            return RankType.TWO_PAIRS;
+            return new RankResult(RankType.TWO_PAIRS, priorityCards) ;
         }
 
-        return RankType.HIGH_CARD;
+        return new RankResult(RankType.HIGH_CARD, priorityCards) ;
     }
 
     private int getCardValue(String value) {
