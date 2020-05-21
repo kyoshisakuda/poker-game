@@ -8,6 +8,11 @@ public class HandCard implements Comparable<HandCard> {
     public HandCard() {
     }
 
+    public HandCard(int value) {
+        this.value = value;
+        this.repetition = 1;
+    }
+
     public HandCard(int value, int repetition) {
         this.value = value;
         this.repetition = repetition;
