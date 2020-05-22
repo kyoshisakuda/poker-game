@@ -1,5 +1,7 @@
 package org.example;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.PriorityQueue;
 
 public class RankResult {
@@ -29,5 +31,17 @@ public class RankResult {
 
     public void setPriorityCards(PriorityQueue<HandCard> priorityCards) {
         this.priorityCards = priorityCards;
+    }
+
+    /**
+     * Calculates the probability of the other player getting a worse
+     * ranking + the probability of getting the same ranking and winning by a higher card value
+     *
+     * @return BigDecimal probability of winning in percentage
+     */
+    public BigDecimal calculateWinningProbability() {
+        int bestCardValue = priorityCards.peek().getValue();
+        BigDecimal sameRankWinningProbability = BigDecimal.valueOf((bestCardValue - 2) / 13f).multiply(rankType.getDrawingProbability());
+        return rankType.getHigherRankProbability().add(sameRankWinningProbability).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 }
