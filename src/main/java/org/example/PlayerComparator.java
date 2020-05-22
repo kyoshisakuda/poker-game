@@ -14,14 +14,12 @@ public class PlayerComparator implements Comparator<RankResult> {
                 int value1 = priorityCardsP1.poll().getValue();
                 int value2 = priorityCardsP2.poll().getValue();
                 if (value1 != value2) {
-                    System.out.println(String.format("Player 1: HighCard(%d) vs Player 2: HighCard(%d)", value1, value2));
                     return value1 > value2 ? 1 : -1;
                 }
             }
             return 0;
         }
 
-        System.out.println(String.format("Player 1: %s vs Player 2: %s", result1.getRankType().name(), result2.getRankType().name()));
         return result1.getRankType().getPriority() > result2.getRankType().getPriority() ? 1 : -1;
     }
 
