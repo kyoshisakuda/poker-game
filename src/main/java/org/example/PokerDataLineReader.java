@@ -16,12 +16,12 @@ public class PokerDataLineReader {
         this.comparator = new PlayerComparator();
     }
 
-    public int readLine(String line) {
+    public HandResult readLine(String line) {
         List<String> cards = Arrays.asList(line.split(SEPARATOR));
         RankResult player1 = rankEvaluator.evaluate(cards.subList(0, 5));
         RankResult player2 = rankEvaluator.evaluate(cards.subList(5, 10));
         int result = comparator.compare(player1, player2);
-        return result == 1 ? 1 : (result == 0 ? 0 : 2);
+        return new HandResult(player1.calculateWinningProbability(), player2.calculateWinningProbability(), result == 1 ? 1 : (result == 0 ? 0 : 2));
     }
 
 }

@@ -16,23 +16,23 @@ public class PokerDataLineReaderTest {
     }
 
     @Test
-    public void readLine_whenPlayer1HasBetterHand_returnOne() {
-        String line = "8C TS KC 9H 4S 7D 2S 5D 3S AC";
-        int winner = lineReader.readLine(line);
-        assertThat(winner, is(2));
+    public void readLine_whenPlayer1HasBetterHand_returnWinnerOne() {
+        String line = "8C TS AC 9H 4S 7D 2S 5D 3S KC";
+        HandResult result = lineReader.readLine(line);
+        assertThat(result.getWinner(), is(1));
     }
 
     @Test
-    public void readLine_whenPlayer2HasBetterHand_returnTwo() {
+    public void readLine_whenPlayer2HasBetterHand_returnWinnerTwo() {
         String line = "2D 9C AS AH AC 3D 6D 7D TD QD";
-        int winner = lineReader.readLine(line);
-        assertThat(winner, is(2));
+        HandResult result = lineReader.readLine(line);
+        assertThat(result.getWinner(), is(2));
     }
 
     @Test
-    public void readLine_whenBothPlayersHaveSameValueHand_return0() {
+    public void readLine_whenBothPlayersHaveSameValueHand_returnWinnerZero() {
         String line = "7C 2S 5S 3S AH 7D 2S 5D 3S AC";
-        int winner = lineReader.readLine(line);
-        assertThat(winner, is(0));
+        HandResult result = lineReader.readLine(line);
+        assertThat(result.getWinner(), is(0));
     }
 }

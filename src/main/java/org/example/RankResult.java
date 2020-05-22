@@ -2,6 +2,7 @@ package org.example;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Collections;
 import java.util.PriorityQueue;
 
 public class RankResult {
@@ -26,7 +27,7 @@ public class RankResult {
     }
 
     public PriorityQueue<HandCard> getPriorityCards() {
-        return priorityCards;
+        return new PriorityQueue<HandCard>(priorityCards);
     }
 
     public void setPriorityCards(PriorityQueue<HandCard> priorityCards) {
