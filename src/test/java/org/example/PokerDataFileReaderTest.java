@@ -27,15 +27,25 @@ public class PokerDataFileReaderTest {
     }
 
     @Test
-    public void testReadFile_returnListOfResults() {
+    public void readFile_returnReportWithWinsSummary() {
         File testFile = new File(getClass().getClassLoader().getResource("pokerdata-test.txt").getFile());
-        List<HandResult> results = fileReader.readFile(testFile);
-        assertThat(results, hasSize(5));
-        assertThat(results.get(0).getWinner(), is(2));
-        assertThat(results.get(1).getWinner(), is(1));
-        assertThat(results.get(2).getWinner(), is(1));
-        assertThat(results.get(3).getWinner(), is(2));
-        assertThat(results.get(4).getWinner(), is(2));
+        ReportObject report = fileReader.readFile(testFile);
+        assertThat(report.getP1Wins(), is(2));
+        assertThat(report.getP2Wins(), is(3));
+        assertThat(report.getDraw(), is(0));
+    }
+
+    @Test
+    public void testReadFile_returnReportWithListOfResults() {
+        File testFile = new File(getClass().getClassLoader().getResource("pokerdata-test.txt").getFile());
+        ReportObject report = fileReader.readFile(testFile);
+        List<HandResult> handResults = report.getHandResults();
+        assertThat(handResults, hasSize(5));
+        assertThat(handResults.get(0).getWinner(), is(2));
+        assertThat(handResults.get(1).getWinner(), is(1));
+        assertThat(handResults.get(2).getWinner(), is(1));
+        assertThat(handResults.get(3).getWinner(), is(2));
+        assertThat(handResults.get(4).getWinner(), is(2));
     }
 
 }

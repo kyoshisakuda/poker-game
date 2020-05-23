@@ -1,0 +1,87 @@
+package org.example;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class ReportFileWriterTest {
+
+    private ReportFileWriter reportFileWriter;
+
+    @Before
+    public void setUp() {
+        reportFileWriter = new ReportFileWriter();
+    }
+
+    @Test
+    public void writeReport_thenReportFileCreated() {
+        ReportObject reportObject = new ReportObject();
+        reportObject.setP1Wins(2);
+        reportObject.setP2Wins(1);
+        reportObject.setDraw(0);
+        reportObject.setHandResults(Arrays.asList(
+                new HandResult(BigDecimal.valueOf(51.1), BigDecimal.valueOf(75.68), 2),
+                new HandResult(BigDecimal.valueOf(47.90), BigDecimal.valueOf(28.35), 1),
+                new HandResult(BigDecimal.valueOf(32.47), BigDecimal.valueOf(58.74), 2)
+        ));
+
+        Path outputDir = null;
+        try {
+            outputDir = Files.createTempDirectory("report_output-" + System.nanoTime());
+            String fileName = "test-report.txt";
+            reportFileWriter.writeReport(reportObject, outputDir, fileName);
+            File generatedFile = outputDir.resolve(fileName).toFile();
+            assertCorrectFile(reportObject, generatedFile);
+            assertThat(generatedFile.exists(), is(true));
+        } catch (IOException e) {
+            System.out.println("Error writing in temp file: " + e.getMessage());
+        } finally {
+            deleteDir(outputDir);
+        }
+    }
+
+    private void assertCorrectFile(ReportObject reportObject, File generatedFile) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(generatedFile))) {
+            assertThat(reader.readLine(), containsString("1: " + reportObject.getP1Wins()));
+            assertThat(reader.readLine(), containsString("2: " + reportObject.getP2Wins()));
+            assertThat(reader.readLine(), containsString("3: " + reportObject.getDraw()));
+            assertThat(reader.readLine(), containsString("4:"));
+            assertThat(reader.readLine(), containsString("------Player 1------|------Player 2------"));
+            for (HandResult handResult : reportObject.getHandResults()) {
+                assertThat(reader.readLine(), containsString(String.format("       %s%%       |       %s%%       ",
+                        handResult.getWinningProbabilityP1().setScale(2).toPlainString(), handResult.getWinningProbabilityP2().setScale(2).toPlainString())));
+            }
+            assertThat(reader.readLine(), isEmptyOrNullString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteDir(Path dir) {
+        try {
+            if (dir != null && dir.toFile().exists()) {
+                Files.walk(dir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            }
+        } catch (IOException e) {
+            System.out.println("Error trying to delete directory: " + e.getMessage());
+        }
+    }
+}

@@ -24,9 +24,10 @@ public class PokerDataFileReader {
         summary.put(2, 0);
     }
 
-    public List<HandResult> readFile(File file) {
-        List<HandResult> handResults = new ArrayList<>();
+    public ReportObject readFile(File file) {
+        ReportObject reportObject = new ReportObject();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            List<HandResult> handResults = new ArrayList<>();
             String currentLine = reader.readLine();
             while (currentLine != null) {
                 HandResult result = lineReader.readLine(currentLine);
@@ -34,12 +35,16 @@ public class PokerDataFileReader {
                 currentLine = reader.readLine();
                 handResults.add(result);
             }
+            reportObject.setDraw(summary.get(0));
+            reportObject.setP1Wins(summary.get(1));
+            reportObject.setP2Wins(summary.get(2));
+            reportObject.setHandResults(handResults);
         } catch (FileNotFoundException e) {
             System.out.println("Error locating the given file: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("Something went wrong when reading the file: " + e.getMessage());
         }
-        return handResults;
+        return reportObject;
     }
 
 }
