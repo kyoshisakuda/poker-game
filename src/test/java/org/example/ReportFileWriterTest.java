@@ -44,11 +44,10 @@ public class ReportFileWriterTest {
         Path outputDir = null;
         try {
             outputDir = Files.createTempDirectory("report_output-" + System.nanoTime());
-            String fileName = "test-report.txt";
-            reportFileWriter.writeReport(reportObject, outputDir, fileName);
-            File generatedFile = outputDir.resolve(fileName).toFile();
-            assertCorrectFile(reportObject, generatedFile);
-            assertThat(generatedFile.exists(), is(true));
+            File outputFile = outputDir.resolve("test-report.txt").toFile();
+            reportFileWriter.writeReport(reportObject, outputFile);
+            assertCorrectFile(reportObject, outputFile);
+            assertThat(outputFile.exists(), is(true));
         } catch (IOException e) {
             System.out.println("Error writing in temp file: " + e.getMessage());
         } finally {

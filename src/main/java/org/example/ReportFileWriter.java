@@ -7,11 +7,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-public class ReportFileWriter {
+public class ReportFileWriter implements ReportWriter {
 
-    public void writeReport(ReportObject reportObject, Path outputDir, String fileName) {
-        File outputFile = outputDir.resolve(fileName).toFile();
+    @Override
+    public void writeReport(ReportObject reportObject, File outputFile) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+            System.out.println("Writing to output file: " + outputFile.toString());
             writeLine(writer, "1: " + reportObject.getP1Wins());
             writeLine(writer, "2: " + reportObject.getP2Wins());
             writeLine(writer, "3: " + reportObject.getDraw());

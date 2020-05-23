@@ -25,6 +25,7 @@ public class PokerDataFileReader {
     }
 
     public ReportObject readFile(File file) {
+        System.out.println("Reading from input file: " + file.toString());
         ReportObject reportObject = new ReportObject();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             List<HandResult> handResults = new ArrayList<>();
