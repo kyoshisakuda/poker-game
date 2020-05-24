@@ -1,5 +1,7 @@
 package org.example;
 
+import static java.util.Objects.isNull;
+
 import org.example.data.ReportObject;
 import org.example.game.PlayerComparator;
 import org.example.game.PokerGameEvaluator;
@@ -9,7 +11,6 @@ import org.example.io.ReportFileWriter;
 import org.example.io.ReportWriter;
 
 import java.io.File;
-import java.util.Objects;
 
 public class PokerGameApp {
 
@@ -24,13 +25,17 @@ public class PokerGameApp {
     }
 
     public static PokerGameApp getInstance() {
-        if (Objects.isNull(instance)) {
+        if (isNull(instance)) {
             PokerDataFileReader pokerDataFileReader = new PokerDataFileReader(new PokerGameEvaluator(new RankEvaluator(), new PlayerComparator()));
             ReportWriter reportWriter = new ReportFileWriter();
             System.out.println("Initializing Poker Game App...");
             instance = new PokerGameApp(pokerDataFileReader, reportWriter);
         }
         return instance;
+    }
+
+    public File getInputFileFromResource() {
+        return new File(getClass().getClassLoader().getResource("pokerdata.txt").getFile());
     }
 
     public PokerDataFileReader getPokerDataFileReader() {
@@ -43,7 +48,7 @@ public class PokerGameApp {
 
     public static void main(String[] args) {
         PokerGameApp app = PokerGameApp.getInstance();
-        File inputFile = new File(System.getProperty("user.home") + "/pokerdata.txt");
+        File inputFile = app.getInputFileFromResource();
         File outputFile = new File(System.getProperty("user.home") + "/pokerdata-result.txt");
 
         ReportObject report = app.getPokerDataFileReader().readFile(inputFile);
