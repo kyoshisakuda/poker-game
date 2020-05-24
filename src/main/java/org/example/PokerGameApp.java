@@ -1,5 +1,13 @@
 package org.example;
 
+import org.example.data.ReportObject;
+import org.example.game.PlayerComparator;
+import org.example.game.PokerGameEvaluator;
+import org.example.game.RankEvaluator;
+import org.example.io.PokerDataFileReader;
+import org.example.io.ReportFileWriter;
+import org.example.io.ReportWriter;
+
 import java.io.File;
 import java.util.Objects;
 
@@ -17,7 +25,7 @@ public class PokerGameApp {
 
     public static PokerGameApp getInstance() {
         if (Objects.isNull(instance)) {
-            PokerDataFileReader pokerDataFileReader = new PokerDataFileReader(new PokerDataLineReader(new RankEvaluator()));
+            PokerDataFileReader pokerDataFileReader = new PokerDataFileReader(new PokerGameEvaluator(new RankEvaluator(), new PlayerComparator()));
             ReportWriter reportWriter = new ReportFileWriter();
             System.out.println("Initializing Poker Game App...");
             instance = new PokerGameApp(pokerDataFileReader, reportWriter);

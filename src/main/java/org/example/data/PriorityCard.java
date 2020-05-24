@@ -1,19 +1,16 @@
-package org.example;
+package org.example.data;
 
-public class HandCard implements Comparable<HandCard> {
+public class PriorityCard implements Comparable<PriorityCard> {
 
     private int value;
     private int repetition;
 
-    public HandCard() {
-    }
-
-    public HandCard(int value) {
+    public PriorityCard(int value) {
         this.value = value;
         this.repetition = 1;
     }
 
-    public HandCard(int value, int repetition) {
+    public PriorityCard(int value, int repetition) {
         this.value = value;
         this.repetition = repetition;
     }
@@ -35,7 +32,7 @@ public class HandCard implements Comparable<HandCard> {
     }
 
     @Override
-    public int compareTo(HandCard card) {
+    public int compareTo(PriorityCard card) {
         if (this.repetition > card.repetition) {
             return 1;
         } else if (this.repetition < card.repetition) {

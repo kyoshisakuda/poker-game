@@ -1,4 +1,6 @@
-package org.example;
+package org.example.io;
+
+import org.example.data.ReportObject;
 
 import java.io.File;
 

@@ -1,14 +1,14 @@
-package org.example;
+package org.example.data;
 
 import java.math.BigDecimal;
 
-public class HandResult {
+public class GameResult {
 
     private BigDecimal winningProbabilityP1;
     private BigDecimal winningProbabilityP2;
     private int winner;
 
-    public HandResult(BigDecimal winningProbabilityP1, BigDecimal winningProbabilityP2, int winner) {
+    public GameResult(BigDecimal winningProbabilityP1, BigDecimal winningProbabilityP2, int winner) {
         this.winningProbabilityP1 = winningProbabilityP1;
         this.winningProbabilityP2 = winningProbabilityP2;
         this.winner = winner;

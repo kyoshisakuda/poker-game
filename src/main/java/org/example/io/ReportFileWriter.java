@@ -1,11 +1,12 @@
-package org.example;
+package org.example.io;
+
+import org.example.data.GameResult;
+import org.example.data.ReportObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
 
 public class ReportFileWriter implements ReportWriter {
 
@@ -18,9 +19,9 @@ public class ReportFileWriter implements ReportWriter {
             writeLine(writer, "3: " + reportObject.getDraw());
             writeLine(writer, "4: ");
             writeLine(writer, "------Player 1------|------Player 2------");
-            for (HandResult handResult : reportObject.getHandResults()) {
+            for (GameResult gameResult : reportObject.getGameResults()) {
                 String percentLine = String.format("       %s%%       |       %s%%       ",
-                        handResult.getWinningProbabilityP1().setScale(2).toPlainString(), handResult.getWinningProbabilityP2().setScale(2).toPlainString());
+                        gameResult.getWinningProbabilityP1().setScale(2).toPlainString(), gameResult.getWinningProbabilityP2().setScale(2).toPlainString());
                 writeLine(writer, percentLine);
             }
         } catch (IOException e) {

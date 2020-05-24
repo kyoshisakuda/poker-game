@@ -1,19 +1,17 @@
-package org.example;
+package org.example.data;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Collections;
 import java.util.PriorityQueue;
 
 public class RankResult {
 
     private RankType rankType;
-    private PriorityQueue<HandCard> priorityCards;
+    private PriorityQueue<PriorityCard> priorityCards;
 
     public RankResult() {
     }
 
-    public RankResult(RankType rankType, PriorityQueue<HandCard> priorityCards) {
+    public RankResult(RankType rankType, PriorityQueue<PriorityCard> priorityCards) {
         this.rankType = rankType;
         this.priorityCards = priorityCards;
     }
@@ -26,11 +24,11 @@ public class RankResult {
         this.rankType = rankType;
     }
 
-    public PriorityQueue<HandCard> getPriorityCards() {
-        return new PriorityQueue<HandCard>(priorityCards);
+    public PriorityQueue<PriorityCard> getPriorityCards() {
+        return new PriorityQueue<PriorityCard>(priorityCards);
     }
 
-    public void setPriorityCards(PriorityQueue<HandCard> priorityCards) {
+    public void setPriorityCards(PriorityQueue<PriorityCard> priorityCards) {
         this.priorityCards = priorityCards;
     }
 

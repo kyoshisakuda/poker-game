@@ -1,4 +1,4 @@
-package org.example;
+package org.example.data;
 
 import java.util.List;
 
@@ -7,16 +7,16 @@ public class ReportObject {
     private int p1Wins;
     private int p2Wins;
     private int draw;
-    private List<HandResult> handResults;
+    private List<GameResult> gameResults;
 
     public ReportObject() {
     }
 
-    public ReportObject(int p1Wins, int p2Wins, int draw, List<HandResult> handResults) {
+    public ReportObject(int p1Wins, int p2Wins, int draw, List<GameResult> gameResults) {
         this.p1Wins = p1Wins;
         this.p2Wins = p2Wins;
         this.draw = draw;
-        this.handResults = handResults;
+        this.gameResults = gameResults;
     }
 
     public int getP1Wins() {
@@ -43,11 +43,11 @@ public class ReportObject {
         this.draw = draw;
     }
 
-    public List<HandResult> getHandResults() {
-        return handResults;
+    public List<GameResult> getGameResults() {
+        return gameResults;
     }
 
-    public void setHandResults(List<HandResult> handResults) {
-        this.handResults = handResults;
+    public void setGameResults(List<GameResult> gameResults) {
+        this.gameResults = gameResults;
     }
 }
