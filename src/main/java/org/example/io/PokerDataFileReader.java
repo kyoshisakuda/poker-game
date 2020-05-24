@@ -5,12 +5,15 @@ import org.example.data.GameResult;
 import org.example.data.ReportObject;
 import org.example.data.mapper.CardMapper;
 import org.example.game.PokerGameEvaluator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.stream.Stream;
 
 public class PokerDataFileReader {
 
+    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final String DELIMITER = " ";
 
     private PokerGameEvaluator pokerGame;
@@ -29,7 +33,7 @@ public class PokerDataFileReader {
     }
 
     public ReportObject readFile(File file) {
-        System.out.println("Reading from input file: " + file.toString());
+        logger.info("Reading from input file: {}", file.toString());
         ReportObject reportObject = new ReportObject();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             Map<Integer, Integer> summary = initSummaryMap();
@@ -47,9 +51,9 @@ public class PokerDataFileReader {
             reportObject.setP2Wins(summary.get(2));
             reportObject.setGameResults(gameResults);
         } catch (FileNotFoundException e) {
-            System.out.println("Error locating the given file: " + e.getMessage());
+            logger.error("Error locating the given file: " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("Something went wrong when reading the file: " + e.getMessage());
+            logger.error("Something went wrong when reading the file: " + e.getMessage());
         }
         return reportObject;
     }

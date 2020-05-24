@@ -9,11 +9,15 @@ import org.example.game.RankEvaluator;
 import org.example.io.PokerDataFileReader;
 import org.example.io.ReportFileWriter;
 import org.example.io.ReportWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.lang.invoke.MethodHandles;
 
 public class PokerGameApp {
 
+    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static PokerGameApp instance;
 
     private PokerDataFileReader pokerDataFileReader;
@@ -28,7 +32,7 @@ public class PokerGameApp {
         if (isNull(instance)) {
             PokerDataFileReader pokerDataFileReader = new PokerDataFileReader(new PokerGameEvaluator(new RankEvaluator(), new PlayerComparator()));
             ReportWriter reportWriter = new ReportFileWriter();
-            System.out.println("Initializing Poker Game App...");
+            logger.info("Initializing Poker Game App...");
             instance = new PokerGameApp(pokerDataFileReader, reportWriter);
         }
         return instance;
@@ -53,7 +57,7 @@ public class PokerGameApp {
 
         ReportObject report = app.getPokerDataFileReader().readFile(inputFile);
         app.getReportWriter().writeReport(report, outputFile);
-        System.out.println("---- Finish ----");
+        logger.info("---- Finish ----");
     }
 
 }
